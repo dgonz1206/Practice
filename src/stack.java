@@ -14,15 +14,12 @@ public class stack {
         int answer = 0;
         Set j_split = new HashSet();
         //Set<Character> j_split = new HashSet<>();
-        for (char j : J.toCharArray()) {
+        for (char j : J.toCharArray())
             j_split.add(j);
-        }
-        for (char j: J.toCharArray()) j_split.add(j);
-        for (char s: S.toCharArray()) if (j_split.contains(s)) answer++;
-//        String[] s_split = new String[S.length()];
-//        for(String x: S.split(""))
-//            if(J.contains(x+""))
-//                answer++;
+        for (char s: S.toCharArray())
+            if (j_split.contains(s))
+                answer++;
+
 
         return answer;
     }
