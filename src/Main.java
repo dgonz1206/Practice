@@ -1,4 +1,11 @@
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+
+import static java.util.Objects.hash;
 
 public class Main {
 /*
@@ -21,23 +28,41 @@ So if the cost of something is like 12.75, and paid is 20, change  would be 7.25
         }
         return false;
     }
-    private static Boolean printRepeating(int arr[], int size)
-    {
-        int i;
-        System.out.println("The repeating elements are : ");
 
-        for (i = 0; i < size; i++)
-        {
-            if (arr[Math.abs(arr[i])] >= 0) {
-                System.out.println("wtf: "+arr[Math.abs(arr[i])] +", " + -arr[Math.abs(arr[i])]);
-                arr[Math.abs(arr[i])] = -arr[Math.abs(arr[i])];
+    private static String change(double total, double payment){
+        int[] bills = new int[]{1,5,10,20,50,100};
+        double[] coins = new double[]{.01,.05,.10,.25};
+        BigDecimal remaining_value = BigDecimal.valueOf(payment - total);
+        BigDecimal cash_remaining_BD = remaining_value.setScale(0, RoundingMode.FLOOR);
+        BigDecimal coin_remaining_BD = remaining_value.subtract(cash_remaining_BD);
+        if(remaining_value.compareTo(BigDecimal.ZERO) < 0)
+            return "Insufficient funds";
+        int cash_remaining = remaining_value.intValue();
+        double coin_remaining = coin_remaining_BD.doubleValue();
+        int bill_start;
+
+        while(cash_remaining > 0) {
+            for (int x = 0; x < bills.length; x++) {
+                if (cash_remaining < x) {
+                    bill_start = x;
+                    System.out.println(bills[x]);
+                    cash_remaining -= bills[x];
+                    break;
+                }
+                else{
+                    cash_remaining-=1;
+                }
             }
-            else
-                System.out.println("else: "+Math.abs(arr[i]) + " ");
         }
-        for(int x: arr)
-            System.out.print(x+",");
-        return false;
+
+        System.out.println("$"+remaining_value + " is your change");
+        System.out.println(cash_remaining_BD +" " +coin_remaining_BD);
+        System.out.println("hascode: "+"KING".hashCode());
+        System.out.println(hash("KING"));
+        int index = hash("KING") & (3-1);
+        System.out.println(index);
+        System.out.println(hash("IlNG") % 16);
+        return "done";
     }
     public static void main(String[] args) {
         //create a method that returns a boolean, takes an int array as a parameter. If the array has a duplicate return true, if not return false
@@ -46,12 +71,12 @@ So if the cost of something is like 12.75, and paid is 20, change  would be 7.25
         for(int x:myarray){
             myList.add(x);
         }
-        int[] order = new int[]{1,2,3,4,5};
-        //System.out.println(isDuplicate(order));
-        int arr[] = {1, 2, 3, 1, 3, 6, 6};
-        int arr_size = arr.length;
+        // create a method that takes parameters for cost, and amount paid for an item, that returns the number of bills and coins
+        //you need for the change.
+        System.out.println(change(3.36, 20));
 
-        System.out.println(printRepeating(arr, arr_size));
+
+
 
     }
 }
